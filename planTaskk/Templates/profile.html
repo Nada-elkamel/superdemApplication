@@ -374,5 +374,12 @@
 </script>
 {% endif %}
 {% endfor %}
+<script>
+    // Simuler un clic sur l'onglet "A propos" lors du chargement de la page
+    window.addEventListener('load', function () {
+        const aboutTab = document.getElementById('about-tab');
+        aboutTab.click();
+    });
+</script>
 
 </html>
