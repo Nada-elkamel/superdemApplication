@@ -184,50 +184,23 @@
             {% endfor %}
 
 
-
-            <!--Task infos modal-->
-            {% for tdo in page_obj %}
-        <div class="modal fade" id="exampleModalInfo{{tdo.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelInfo{{tdo.id}}"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelInfo{{tdo.id}}">Tache completé :</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <!--Modal body-->
-                <div class="modal-body">
-                    <form name="f#" >
-                        {% csrf_token %}
-                       
-                        <div class="form-group">
-                            <label>Commentaire :</label>
-                           <h6> {{tdo.commentaire}}</h6>
+            <form method="GET" action="{% url 'TaskList' %}">
+                <div class="div-btn d-flex justify-content-start">
+                    <button type="button" class="btn btn-primary btn-block compose-btn mb-4" style="width:170px;background-color: #e1000a;" data-toggle="modal" data-target="#exampleModal"><i class="bx bx-plus"></i> Nouvelle tâche</button>
+                    <div style="position: absolute; right:  180px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filter" id="allTasksRadio" value="" {% if filter_option == '' %}checked{% endif %}>
+                            <label class="form-check-label" for="allTasksRadio">Toutes les tâches</label>
                         </div>
-
-
+            
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filter" id="tasksForMeRadio" value="tasks_for_me" {% if filter_option == 'tasks_for_me' %}checked{% endif %}>
+                            <label class="form-check-label" for="tasksForMeRadio">Mes tâches</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="background-color: #e1000a;">Filter</button>
+                    </div>
                 </div>
-                <!-- End Modal body-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end of task info Modal-->
-            {% endfor %}
-
-
-        <!-- button add-->
-        <div class="div-btn d-flex justify-content-start">
-            <button type="button" class="btn btn-primary btn-block compose-btn mb-4" style="width:170px;"><i class="bx bx-plus"></i> Nouvelle tache</button>
-        </div>
-
-
-
+            </form>
 
         <!-- Add Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -329,7 +302,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th scope="col">Tache</th>
+                                        <th scope="col">Tâche</th>
                                         <th scope="col">D.Limite</th>
                                         <th scope="col">Nature</th>
                                         <th scope="col">Source</th>
@@ -349,9 +322,7 @@
 
                                             <a href="#" data-toggle="modal" data-target="#exampleModal{{tdo.id}}"><i class='bx bx-select-multiple'></i></a>
 
-                                            {% elif tdo.status == 'Completé' %}
-                                            <a href="#" data-toggle="modal" data-target="#exampleModalInfo{{tdo.id}}"><i class='bx bx-info-square' style="color:blue;"></i></a>
-                                                {% endif %}
+                                            {% endif %}
                                         </td>
                                        
                                         <td>{{tdo.tache}}</td>
@@ -395,7 +366,6 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <p> current page: {{page_obj.number}} </p>
                             <nav>
                                 <ul class="pagination ">
                                     <li class="page-item">
