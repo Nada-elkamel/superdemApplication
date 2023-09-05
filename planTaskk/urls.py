@@ -14,9 +14,9 @@ path('Dashboard', views.dashboard,name='dashboard'),
 
 path('profile/', views.profile, name='profile'),
 path('edit_profile/', views.edit_profile, name='edit_profile'),
-path('edit/<int:task_id>', views.edit, name='edit'),
+path('edit/<int:task_id>/<int:current_page>', views.edit, name='edit'),
 path('update/<int:task_id>',views.update_task, name='update_task'),
-path('start_task/<int:task_id>',views.start_task,name='start_task'),
+path('start_task/<int:task_id>/<int:current_page>',views.start_task,name='start_task'),
 path('task_done/',views.task_done,name='task_done'),
 
 path('disconnect/', views.signOut, name='disconnect'),

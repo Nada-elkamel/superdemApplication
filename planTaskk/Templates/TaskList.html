@@ -342,14 +342,14 @@
                                         {% endif %}
                                         <td>
                                             {% if request.user.username == tdo.createur %}
-                                            <a href="{% url 'edit' tdo.id %}" class="edit" style="padding: 5px 10px; color: #6096fc; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                            <a href="{% url 'edit' tdo.id page_obj.number %}" class="edit" style="padding: 5px 10px; color: #6096fc; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
                                                 onmouseover="this.style.backgroundColor = 'rgba(96, 150, 252, 0.4)';"
                                                 onmouseout="this.style.backgroundColor = 'transparent';">
                                                 <i class='bx bx-edit-alt' alt="editer"></i>
                                             </a>
                                             {% endif %}
                                             {% if request.user.username == tdo.responsable and tdo.status == 'Programmé' %}
-                                            <a href="{% url 'start_task' tdo.id  %}" style="padding: 5px 10px; color: #ffaf47; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                            <a href="{% url 'start_task' tdo.id page_obj.number %}" style="padding: 5px 10px; color: #ffaf47; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
                                                 onmouseover="this.style.backgroundColor = 'rgba(255, 175, 71, 0.4)';"
                                                 onmouseout="this.style.backgroundColor = 'transparent';">
                                                 <i class="bx bxs-hand-up"></i>
@@ -361,6 +361,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            <p> current page: {{page_obj.number}} </p>
                             <nav>
                                 <ul class="pagination ">
                                     <li class="page-item">

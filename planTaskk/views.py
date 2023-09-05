@@ -213,21 +213,17 @@ def edit_profile(request):
 
 from urllib.parse import parse_qs
 @login_required(login_url='login')
-def edit(request,task_id):
+def edit(request,task_id,current_page):
     user_profile = UserProfile.objects.get(user=request.user)
     task = Todo.objects.get( id=task_id)
-    query_string = request.META['QUERY_STRING']
-    query_params = parse_qs(query_string)
-    current_page = query_params.get('page')
-    print("*************")
-    print("*************current page is:" ,query_string)
     context = {
         'task' : task,
         'employes' : employes,
         'sources' : sources,
         'natures' : natures,
         'current_page' : current_page,
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'current_page' : current_page
 
     }
     return render(request, 'edit.html',context)
@@ -242,18 +238,20 @@ def update_task(request, task_id):
         task.nature = request.POST['nature']
         task.tache = request.POST['tache']
         task.status = request.POST['status']
+        if task.status == 'Interne':
+            task.interne = request.POST['interne']
         task.save()
         current_page = request.POST['current_page']
-        return HttpResponseRedirect('/TaskList/?page='+ current_page)  # Redirect back to the task list
+        return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page))  # Redirect back to the task list
     return render(request, 'edit_task.html', {'task': task})
 
 
-def start_task(request,task_id):
+def start_task(request,task_id,current_page):
     task = Todo.objects.get( id=task_id)
     task.status = "En cours"
     task.save()
     
-    return redirect('TaskList')
+    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page))  # Redirect back to the task list
 
 
 def task_done(request):
