@@ -1,0 +1,495 @@
+<!doctype html>
+{% load static %}
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Vendors Min CSS -->
+    <link rel="stylesheet" href="{% static 'css/vendors.min.css' %}" />
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style14.css' %}" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Liste des tâches</title>
+    <link rel="icon" type="image/png" href="{% static 'image/Super-dem.png' %}">
+</head>
+
+<body>
+
+    <!-- Start Sidemenu Area -->
+    <div class="sidemenu-area">
+        <div class="sidemenu-header">
+            <div class="navbar-brand d-flex align-items-center">
+                <img src="{% static 'image/logo-superdem.png'%}" alt="image">
+           </div>
+
+            <div class="burger-menu d-none d-lg-block">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
+
+            <div class="responsive-burger-menu d-block d-lg-none">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
+        </div>
+
+        <div class="sidemenu-body">
+            <ul class="sidemenu-nav metisMenu h-100" id="sidemenu-nav" data-simplebar>
+                <li class="nav-item-title">
+
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'dashboard' %}" class="nav-link" aria-expanded="false">
+                        <span class="icon"><i class='bx bx-home-circle'></i></span>
+                        <span class="menu-title">Tableau de bord</span>
+                    </a>
+                </li>
+
+                <li class="nav-item-title">
+
+                </li>
+                <li class="nav-item ">
+                    <a href="{% url 'TaskList' %}" class="nav-link">
+                        <span class="icon"><i class='bx bx-badge-check'></i></span>
+                        <span class="menu-title">Liste des tâches</span>
+                    </a>
+                </li>
+        </div>
+    </div>
+    <!-- End Sidemenu Area -->
+
+    <!-- Start Main Content Wrapper Area -->
+    <div class="main-content d-flex flex-column">
+
+        <!-- Top Navbar Area -->
+        <nav class="navbar top-navbar navbar-expand">
+            <div class="collapse navbar-collapse" id="navbarSupportContent">
+                <div class="responsive-burger-menu d-block d-lg-none">
+                    <span class="top-bar"></span>
+                    <span class="middle-bar"></span>
+                    <span class="bottom-bar"></span>
+                </div>
+
+                <form method="get" class="nav-search-form d-none ml-auto d-md-block">
+                    <label><i class='bx bx-search'></i></label>
+                    <input type="text" class="form-control" onkeyup="searchFunction()" id="searchInput"
+                        placeholder="Chercher ici...">
+                </form>
+
+                <ul class="navbar-nav right-nav align-items-center">
+
+                    <li class="nav-item dropdown profile-nav-item">
+                        <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <div class="menu-profile">
+                                {% if request.user.is_authenticated %}
+                                <span class="name">Bonjour {{ request.user.username }}</span>
+                                <img src="{{ user_profile.image.url }}" class="rounded-circle" alt="image">
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header d-flex flex-column align-items-center">
+                                <div class="figure mb-3">
+                                    <img src="{{ user_profile.image.url }}" class="rounded-circle" alt="image">
+                                </div>
+
+                                <div class="info text-center">
+                                    {% if request.user.is_authenticated %}
+                                    <span class="name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                                    <p class="mb-3 email">{{ request.user.email }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="dropdown-body">
+                                <ul class="profile-nav p-0 pt-3">
+                                    <li class="nav-item">
+                                        <a href="{% url 'profile' %}" class="nav-link">
+                                            <i class='bx bx-user'></i> <span>Profil</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-footer">
+                                <ul class="profile-nav">
+                                    <li class="nav-item">
+                                        <a href="{% url 'disconnect' %}" class="nav-link">
+                                            <i class='bx bx-log-out'></i> <span>Se déconnecter</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Top Navbar Area -->
+        <!-- Breadcrumb Area -->
+        <div class="breadcrumb-area">
+            <h1>Liste des tâches</h1>
+        </div>
+        <!-- End Breadcrumb Area -->
+
+        <!--Task done modal-->{% for tdo in page_obj %}
+        <div class="modal fade" id="exampleModal{{tdo.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{tdo.id}}"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel{{tdo.id}}">Tache completé :</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!--Modal body-->
+                <div class="modal-body">
+                    <form name="f3" method="post" action="{% url 'task_done' %}">
+                        {% csrf_token %}
+                       
+                        <div class="form-group">
+                            <input type="text" name="task_id" value="{{tdo.id}}" hidden=true >
+                            <label>Tâche :</label>
+                            <textarea class="form-control" name="commentaire" id="validationTextarea"
+                                placeholder="Commentaire..." required></textarea>
+                        </div>
+
+
+                </div>
+                <!-- End Modal body-->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of task done Modal-->
+            {% endfor %}
+
+
+
+
+
+        <div class="div-btn d-flex justify-content-start" style="position: fixed;bottom: 520px;">
+            <button type="button" class="btn btn-success rounded-circle" data-toggle="modal"
+                data-target="#exampleModal">
+                <i class='bx bx-plus'></i>
+            </button>
+        </div>
+
+
+
+
+        <!-- Add Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une tâche</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!--Modal body-->
+                    <div class="modal-body">
+                        <form name="f1" method="post" action="{% url 'add_todo' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Responsable :</label>
+
+                                <select name="responsable" class="form-control">
+                                    <option selected disabled>Sélectionner un responsable</option>
+                                    {% for employe in employes %}
+                                    <option value="{{ employe }}">{{ employe }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Source:</label>
+
+                                <select name="source" id="source" class="form-control">
+                                    <option selected disabled>Sélectionner la source</option>
+                                    <option value="Appel reçu">Appel reçu</option>
+                                    <option value="Mail">Mail</option>
+                                    <option value="Interne">Interne</option>
+                                </select>
+                            </div>
+
+                            <div id="interneSelectContainer" style="display: none;">
+                                <div class="form-group">
+                                    <label>Interne :</label>
+                                    <select name="interne" class="form-control">
+                                        <option selected disabled>Sélectionner un interne</option>
+                                        {% for employe in employes %}
+                                        <option value="{{ employe }}">{{ employe }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nature tâche:</label>
+
+                                <select name="nature" class="form-control">
+                                    <option selected disabled>Sélectionner la nature</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Logistique">Logistique</option>
+                                    <option value="Point interne">Point interne</option>
+                                    <option value="Facture client">Facture client</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tâche :</label>
+                                <textarea class="form-control" name="tache" id="validationTextarea"
+                                    placeholder="Tache a faire" required></textarea>
+                            </div>
+                            <div class="form-group ">
+                                <label for="deadline">Date limite :</label>
+                                <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+                            </div>
+                            <div class="form-group form-check">
+                                <label>Status</label><br>
+                                <input type="radio" name="status" value="Non pris en charge" class="form-check-input"
+                                    id="r1" checked>
+                                <label class="form-check-label" for="r1">Non pris en charge</label>
+                                <input type="radio" name="status" value="Programmé" class="form-check-input" id="r1" style="position: absolute; left: 180px;">
+                                <label class="form-check-label" for="r1" style="position: absolute; left: 185px;" >Programmé</label>
+                            </div>
+
+                    </div>
+                    <!-- End Modal body-->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of Add Modal-->
+
+        <div class="todo-content-area mt-20">
+                <div class="todo-area">
+                    <div class="todo-list-wrapper">
+                        <div class="todo-list">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th scope="col">Tache</th>
+                                        <th scope="col">D.Limite</th>
+                                        <th scope="col">Nature</th>
+                                        <th scope="col">Source</th>
+                                        <th scope="col">responsable</th>
+                                        <th scope="col">Créateur</th>
+                                        <th scope="col">D.Création</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for tdo in page_obj %}
+                                    <tr>
+                                        
+                                        <td>
+                                            {% if tdo.status == 'En cours' %}
+
+                                            <a href="#" data-toggle="modal" data-target="#exampleModal{{tdo.id}}"><i class='bx bx-select-multiple'></i></a>
+
+                                            {% endif %}
+                                        </td>
+                                       
+                                        <td>{{tdo.tache}}</td>
+                                        <td>{{tdo.deadline|date:"d/m/Y" }}</td>
+                                        <td>{{tdo.nature}}</td>
+                                        <td>{{tdo.source}}</td>
+                                        <td>{{tdo.responsable}}</td>
+                                        <td>{{tdo.createur}}</td>
+                                        <td>{{tdo.datecreation|date:"d/m/Y" }}</td>
+                                        {% if tdo.status == 'Programmé' %}
+                                        <td class="badge rounded-pill" style="background-color: #b5d6fd;"><i
+                                                class='bx bx-alarm'></i>Programmé</td>
+                                        {% elif tdo.status == 'Non pris en charge' %}
+                                        <td class="badge rounded-pill" style="background-color: #dddddd;"><i
+                                                class='bx bx-calendar'></i>Non pris en charge</td>
+                                        {% elif tdo.status == 'Completé' %}
+                                        <td class="badge rounded-pill" style="background-color: green;"><i
+                                                class='bx bx-check' ></i>Completé</td>
+                                        {% elif tdo.status == 'En cours' %}
+                                        <td class="badge rounded-pill" style="background-color: rgb(230, 164, 22);"><i
+                                                    class='bx bx-fast-forward'></i>En cours</td>
+                                        {% endif %}
+                                        <td>
+                                            {% if request.user.username == tdo.createur %}
+                                            <a href="{% url 'edit' tdo.id %}" class="edit" style="padding: 5px 10px; color: #6096fc; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                                onmouseover="this.style.backgroundColor = 'rgba(96, 150, 252, 0.4)';"
+                                                onmouseout="this.style.backgroundColor = 'transparent';">
+                                                <i class='bx bx-edit-alt' alt="editer"></i>
+                                            </a>
+                                            {% endif %}
+                                            {% if request.user.username == tdo.responsable and tdo.status == 'Programmé' %}
+                                            <a href="{% url 'start_task' tdo.id  %}" style="padding: 5px 10px; color: #ffaf47; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                                onmouseover="this.style.backgroundColor = 'rgba(255, 175, 71, 0.4)';"
+                                                onmouseout="this.style.backgroundColor = 'transparent';">
+                                                <i class="bx bxs-hand-up"></i>
+                                            </a>
+                                            {% endif %}
+                                        </td>
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul class="pagination ">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">First</span>
+                                        </a>
+                                    </li>
+                                    {% for i in page_obj.paginator.page_range %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{i}}">{{ i }}</a>
+                                    </li>
+                                    {% endfor %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+
+        <!-- Start Footer End -->
+        <footer class="footer-area">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <p>Copyright <i class='bx bx-copyright'></i> 2023 <a href="#">superdem</a>. All rights
+                        reserved</p>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer End -->
+
+    </div>
+    <!-- End Main Content Wrapper Area -->
+
+
+    <!-- Vendors Min JS -->
+    <script src="{% static 'js/vendors.min.js' %}"></script>
+
+    <!-- ApexCharts JS -->
+    <script src="{% static 'js/apexcharts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-stock-prices.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-irregular-data-series.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-line-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-pie-donut-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-area-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-column-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-bar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-mixed-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radialbar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radar-chart.js' %}"></script>
+
+    <!-- ChartJS -->
+    <script src="{% static 'js/chartjs/chartjs.min.js' %}"></script>
+
+    <!-- jvectormap Min JS -->
+    <script src="{% static 'js/jvectormap-1.2.2.min.js' %}"></script>
+
+    <!-- jvectormap World Mil JS -->
+    <script src="{% static 'js/jvectormap-world-mill-en.js' %}"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+
+
+    <!-- Place the JavaScript code within the <head> or just before </body> -->
+    <script>
+        // Get references to the select elements
+        const sourceSelect = document.getElementById("source");
+        const interneSelectContainer = document.getElementById("interneSelectContainer");
+
+        // Add an event listener to the source select element
+        sourceSelect.addEventListener("change", function () {
+            if (sourceSelect.value === "Interne") { // Use value property
+                interneSelectContainer.style.display = "block";
+            } else {
+                interneSelectContainer.style.display = "none";
+            }
+        });
+    </script>
+
+    {% for message in messages %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if message.tags == 'success' %}
+    <script>
+        Swal.fire(
+            'Félicitations',
+            '{{message}}',
+            'success'
+        )
+    </script>
+    {% endif %}
+    {% endfor %}
+    <script>
+        function searchFunction() {
+            // Get input value and convert to lowercase
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toLowerCase();
+
+            // Get table rows and loop through them
+            var rows = document.getElementsByTagName("tr");
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+
+                // Get columns in current row
+                var cols = row.getElementsByTagName("td");
+                var found = false;
+
+                // Loop through columns in current row
+                for (var j = 0; j < cols.length; j++) {
+                    var col = cols[j];
+
+                    // If current column contains filter, mark row as found and break out of loop
+                    if (col.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                // Set row display based on whether it was found or not
+                row.style.display = found ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

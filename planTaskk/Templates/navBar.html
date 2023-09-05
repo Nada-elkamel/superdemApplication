@@ -1,0 +1,153 @@
+<!doctype html>
+{% load static %}
+<html lang="zxx">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+        <!-- Vendors Min CSS -->
+        <link rel="stylesheet" href="{% static 'css/vendors.min.css' %}" />
+        <!-- Style CSS -->
+        <link rel="stylesheet" href="{% static 'css/style14.css' %}" />
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+
+    
+
+<!--         <link rel="icon" type="image/png" href="assets/img/favicon.png">
+ -->    </head>
+
+    <body>
+
+        <!-- Start Sidemenu Area -->
+        <div class="sidemenu-area">
+            <div class="sidemenu-header">
+                <a href="dashboard-analytics.html" class="navbar-brand d-flex align-items-center">
+<!--                     <img src="assets/img/small-logo.png" alt="image">
+ -->                    <span>Company</span>
+                </a>
+
+                <div class="burger-menu d-none d-lg-block">
+                    <span class="top-bar"></span>
+                    <span class="middle-bar"></span>
+                    <span class="bottom-bar"></span>
+                </div>
+
+                <div class="responsive-burger-menu d-block d-lg-none">
+                    <span class="top-bar"></span>
+                    <span class="middle-bar"></span>
+                    <span class="bottom-bar"></span>
+                </div>
+            </div>
+
+            <div class="sidemenu-body">
+                <ul class="sidemenu-nav metisMenu h-100" id="sidemenu-nav" data-simplebar>
+                    <li class="nav-item-title">
+                        
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link" aria-expanded="false">
+                            <span class="icon"><i class='bx bx-home-circle'></i></span>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item-title">
+                        
+                    </li>
+                    <li class="nav-item ">
+                        <a href="{% url 'TaskList' %}" class="nav-link">
+                            <span class="icon"><i class='bx bx-badge-check'></i></span>
+                            <span class="menu-title">Todo</span>
+                        </a>
+                    </li> 
+            </div>
+        </div>
+        <!-- End Sidemenu Area -->
+
+        <!-- Start Main Content Wrapper Area -->
+        <div class="main-content d-flex flex-column">
+
+            <!-- Top Navbar Area -->
+            <nav class="navbar top-navbar navbar-expand">
+                <div class="collapse navbar-collapse" id="navbarSupportContent">
+                    <div class="responsive-burger-menu d-block d-lg-none">
+                        <span class="top-bar"></span>
+                        <span class="middle-bar"></span>
+                        <span class="bottom-bar"></span>
+                    </div>
+                    
+                   
+                    <form class="nav-search-form d-none ml-auto d-md-block">
+                        <label><i class='bx bx-search'></i></label>
+                        <input type="text" class="form-control" placeholder="Search here...">
+                    </form>
+
+                    <ul class="navbar-nav right-nav align-items-center">
+                        
+                        <li class="nav-item dropdown profile-nav-item">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="menu-profile">
+                                    {% if request.user.is_authenticated %}
+                                    <span class="name">Hi! {{ request.user.username }}</span>
+                                    <img src="https://icon2.cleanpng.com/20180523/wxj/kisspng-businessperson-computer-icons-avatar-clip-art-lattice-5b0508dc2ee812.2252011515270566041921.jpg" class="rounded-circle" alt="image">
+                                    {% endif %}
+                                </div>
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <div class="dropdown-header d-flex flex-column align-items-center">
+                                    <div class="figure mb-3">
+                                        <img src="https://icon2.cleanpng.com/20180523/wxj/kisspng-businessperson-computer-icons-avatar-clip-art-lattice-5b0508dc2ee812.2252011515270566041921.jpg" class="rounded-circle" alt="image">
+                                    </div>
+
+                                    <div class="info text-center">
+                                        {% if request.user.is_authenticated %}
+                                            <span class="name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                                            <p class="mb-3 email">{{ request.user.email }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="dropdown-body">
+                                    <ul class="profile-nav p-0 pt-3">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class='bx bx-user'></i> <span>Profile</span>
+                                            </a>
+                                        </li>
+<!-- 
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class='bx bx-envelope'></i> <span>My Inbox</span>
+                                            </a>
+                                        </li> -->
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class='bx bx-edit-alt'></i> <span>Edit Profile</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="dropdown-footer">
+                                    <ul class="profile-nav">
+                                        <li class="nav-item">
+                                            <a href="{% url 'disconnect' %}" class="nav-link">
+                                                <i class='bx bx-log-out'></i> <span>Logout</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- End Top Navbar Area -->
+    </div>
+    </body>
+    </html>

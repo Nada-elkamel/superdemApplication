@@ -1,0 +1,378 @@
+<!doctype html>
+{% load static %}
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Vendors Min CSS -->
+    <link rel="stylesheet" href="{% static 'css/vendors.min.css' %}" />
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style14.css' %}" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+
+    <title>Profil</title>
+    <link rel="icon" type="image/png" href="{% static 'image/Super-dem.png' %}">
+
+</head>
+
+<body>
+
+    <!-- Start Sidemenu Area -->
+    <div class="sidemenu-area">
+        <div class="sidemenu-header">
+            <div class="navbar-brand d-flex align-items-center">
+                <img src="{% static 'image/logo-superdem.png'%}" alt="image">
+           </div>
+
+            <div class="burger-menu d-none d-lg-block">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
+
+            <div class="responsive-burger-menu d-block d-lg-none">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
+        </div>
+
+        <div class="sidemenu-body">
+            <ul class="sidemenu-nav metisMenu h-100" id="sidemenu-nav" data-simplebar>
+                <li class="nav-item">
+                    <a href="{% url 'dashboard' %}" class=" nav-link" aria-expanded="false">
+                        <span class="icon"><i class='bx bx-home-circle'></i></span>
+                        <span class="menu-title">Tableau de bord</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'TaskList' %}" class="nav-link">
+                        <span class="icon"><i class='bx bx-badge-check'></i></span>
+                        <span class="menu-title">Listes des tâches</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- End Sidemenu Area -->
+
+    <!-- Start Main Content Wrapper Area -->
+    <div class="main-content d-flex flex-column">
+
+        <!-- Top Navbar Area -->
+        <nav class="navbar top-navbar navbar-expand">
+            <div class="collapse navbar-collapse" id="navbarSupportContent">
+                <div class="responsive-burger-menu d-block d-lg-none">
+                    <span class="top-bar"></span>
+                    <span class="middle-bar"></span>
+                    <span class="bottom-bar"></span>
+                </div>
+                <form class="nav-search-form d-none ml-auto d-md-block">
+                </form>
+
+
+                <ul class="navbar-nav right-nav align-items-center">
+
+                    <li class="nav-item dropdown profile-nav-item">
+                        <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <div class="menu-profile">
+                                {% if request.user.is_authenticated %}
+                                <span class="name">Bonjour {{ request.user.username }}</span>
+                                <img src="{{ user_profile.image.url }}" class="rounded-circle" alt="image">
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header d-flex flex-column align-items-center">
+                                <div class="figure mb-3">
+                                    <img src="{{ user_profile.image.url }}" class="rounded-circle" alt="image">
+                                </div>
+
+                                <div class="info text-center">
+                                    {% if request.user.is_authenticated %}
+                                    <span class="name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                                    <p class="mb-3 email">{{ request.user.email }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="dropdown-body">
+                                <ul class="profile-nav p-0 pt-3">
+                                    <li class="nav-item">
+                                        <a href="{% url 'profile' %}" class="nav-link">
+                                            <i class='bx bx-user'></i> <span>Profil</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-footer">
+                                <ul class="profile-nav">
+                                    <li class="nav-item">
+                                        <a href="{% url 'disconnect' %}" class="nav-link">
+                                            <i class='bx bx-log-out'></i> <span>Se déconnecter</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Top Navbar Area -->
+
+        <!-- Start Profile Area -->
+        <section class="profile-area">
+            <div class="profile-header mb-30">
+                <div class="user-profile-images">
+                    <img src="{% static 'image/bg.jpg' %}" class="cover-image" alt="image">
+                    {% if request.user.is_authenticated %}
+                    <div class="profile-image">
+                        <img src="{{ user_profile.image.url }}" class="rounded-circle" alt="image">
+
+                    </div>
+                    <div class="user-profile-text">
+                        <h3 style="color: black;">{{request.user.first_name}} {{request.user.last_name}}</h3>
+                        <span class="d-block" style="color: black;">{{ user_profile.position }}</span>
+                    </div>
+                </div>
+
+                <div class="user-profile-nav">
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab"
+                                aria-controls="about" aria-selected="false">A propos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+                                aria-controls="settings" aria-selected="false">Paramètres de profil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                   
+                                </div>
+
+
+                                <div class="col-lg-8">
+                                    <div class="card user-info-box mb-30">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h3>Informations</h3>
+
+                                        </div>
+
+                                        <div class="card-body">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="d-flex">
+                                                    <i class="bx bx-briefcase mr-2"></i>
+                                                    <span class="d-inline-block">{{ user_profile.position }} à <a
+                                                            href="#" class="d-inline-block">Superdem</a></span>
+                                                </li>
+                                                <li class="d-flex">
+                                                    <i class='bx bxs-graduation mr-2'></i>
+                                                    <span class="d-inline-block">Education <a href="#"
+                                                            class="d-inline-block">{{ user_profile.studies }}</a></span>
+                                                </li>
+                                                <li class="d-flex">
+                                                    <i class='bx bx-phone mr-2'></i>
+                                                    <span class="d-inline-block">Télephone <a href="#"
+                                                            class="d-inline-block">{{ user_profile.phone }}</a></span>
+                                                </li>
+                                                <li class="d-flex">
+                                                    <i class='bx bx-envelope mr-2'></i>
+                                                    <span class="d-inline-block">Adresse email <a href="#"
+                                                            class="d-inline-block">{{request.user.email}}</a></span>
+                                                </li>
+                                                <li class="d-flex">
+                                                    <i class='bx bx-calendar mr-2'></i>
+                                                    <span class="d-inline-block">Rejoint <a href="#"
+                                                            class="d-inline-block">{{request.user.date_joined}}</a></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card user-about-me-box mb-30">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h3>A propos de Moi</h3>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <p>{{ user_profile.biography }}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                            <div class="card user-settings-box mb-30">
+                                <div class="card-body">
+                                    <form name="f3" method="post" action="{% url 'edit_profile' %}"
+                                        enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <h3><i class='bx bx-user-circle'></i>Coordonnées personelles</h3>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nom</label>
+                                                    <input name="first_name" type="text" class="form-control"
+                                                        value="{{user.first_name}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Prénom</label>
+                                                    <input name="last_name" type="text" class="form-control"
+                                                        value="{{user.last_name}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Position</label>
+                                                    <input name="position" type="text" class="form-control"
+                                                        value="{{user_profile.position}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Biographie</label>
+                                                    <textarea name="biography" cols="30" rows="5"
+                                                        class="form-control">{{ user_profile.biography }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Adresse Email </label>
+                                                    <input name="email" type="email" class="form-control"
+                                                        value="{{user.email}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Télephone</label>
+                                                    <input name="phone" type="text" class="form-control"
+                                                        value="{{user_profile.phone}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Education</label>
+                                                    <input name="studies" type="text" class="form-control"
+                                                        value="{{user_profile.studies}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="image">Image</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="image"
+                                                        name="image">
+                                                    <label class="custom-file-label" for="image">Choose a file</label>
+                                                </div>
+                                                {% if user_profile.image %}
+                                                <img src="{{ user_profile.image.url }}" alt="User Image"
+                                                    style="max-width: 100px;">
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+                                        <div class="btn-box text-right">
+                                            <button type="submit" class="submit-btn"><i class='bx bx-save'></i>
+                                                Enregistrer </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Profile Area -->
+
+        <div class="flex-grow-1"></div>
+
+        <!-- Start Footer End -->
+        <footer class="footer-area">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <p>Copyright <i class='bx bx-copyright'></i> 2023 <a href="#">superdem</a>. All rights reserved</p>
+                </div>
+
+            </div>
+        </footer>
+        <!-- End Footer End -->
+
+    </div>
+    <!-- End Main Content Wrapper Area -->
+
+
+    <!-- Vendors Min JS -->
+    <script src="{% static 'js/vendors.min.js' %}"></script>
+
+    <!-- ApexCharts JS -->
+    <script src="{% static 'js/apexcharts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-stock-prices.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-irregular-data-series.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-line-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-pie-donut-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-area-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-column-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-bar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-mixed-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radialbar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radar-chart.js' %}"></script>
+
+    <!-- ChartJS -->
+    <script src="{% static 'js/chartjs/chartjs.min.js' %}"></script>
+
+
+    <!-- jvectormap Min JS -->
+    <script src="{% static 'js/jvectormap-1.2.2.min.js' %}"></script>
+
+    <!-- jvectormap World Mil JS -->
+    <script src="{% static 'js/jvectormap-world-mill-en.js' %}"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+{% for message in messages %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if message.tags == 'success' %}
+<script>
+    Swal.fire(
+        'Félicitations',
+        '{{message}}',
+        'success'
+    )
+</script>
+{% endif %}
+{% endfor %}
+
+</html>

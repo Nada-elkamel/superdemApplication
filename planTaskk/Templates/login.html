@@ -1,0 +1,111 @@
+<!doctype html>
+{% load static %}
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vendors Min CSS -->
+    <link rel="stylesheet" href="{% static 'css/vendors.min.css' %}" />
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style14.css' %}" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+
+
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="{% static 'image/Super-dem.png' %}">
+</head>
+
+<body>
+
+    <!-- Start Login Area -->
+    <div class="login-area">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="login-form">
+                    <div class="logo">
+                        <img src="{% static 'image/login.png' %}" alt="image">
+                    </div>
+
+                    <h2>Welcome</h2>
+
+                    <form method="post" action="{% url 'login_view' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="username" placeholder="Username">
+                            <span class="label-title"><i class='bx bx-user'></i></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            <span class="label-title"><i class='bx bx-lock'></i></span>
+                        </div>
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Login Area -->
+
+
+    <!-- Vendors Min JS -->
+
+    <script src="{% static 'js/vendors.min.js' %}"></script>
+
+    <!-- ApexCharts JS -->
+    <script src="{% static 'js/apexcharts/apexcharts.min.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-stock-prices.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apexcharts-irregular-data-series.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-line-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-pie-donut-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-area-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-column-chart.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-bar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-mixed-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radialbar-charts.js' %}"></script>
+    <script src="{% static 'js/apexcharts/apex-custom-radar-chart.js' %}"></script>
+
+    <!-- ChartJS -->
+    <script src="{% static 'js/chartjs/chartjs.min.js' %}"></script>
+
+    <!--  <div class="chartjs-colors">
+            <div class="bg-primary"></div>
+            <div class="bg-primary-light"></div>
+            <div class="bg-secondary"></div>
+            <div class="bg-info"></div>
+            <div class="bg-success"></div>
+            <div class="bg-success-light"></div>
+            <div class="bg-danger"></div>
+            <div class="bg-warning"></div>
+            <div class="bg-purple"></div>
+            <div class="bg-pink"></div>
+        </div> -->
+
+    <!-- jvectormap Min JS -->
+    <script src="{% static 'js/jvectormap-1.2.2.min.js' %}"></script>
+
+    <!-- jvectormap World Mil JS -->
+    <script src="{% static 'js/jvectormap-world-mill-en.js' %}"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    </script>
+    {% for message in messages %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if message.tags == 'error' %}
+    <script>
+        Swal.fire(
+            'Oops ..',
+            '{{message}}',
+            'error'
+        )
+    </script>
+    {% endif %}
+    {% endfor%}
+</body>
+
+</html>
