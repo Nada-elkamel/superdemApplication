@@ -22,5 +22,6 @@ class Todo(models.Model):
     tache = models.TextField()
     status = models.CharField(max_length=30)
     deadline = models.DateTimeField()
+    commentaire = models.TextField(blank=True)
     def __str__(self):
         return self.tache
