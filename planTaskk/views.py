@@ -281,7 +281,7 @@ def start_task(request,task_id,current_page):
 
 #fonction qui permet de marquer une tache comme terminée
 @login_required(login_url='login')
-def task_done(request):
+def task_done(request,current_page):
     task_id = request.POST['task_id']
     task = Todo.objects.get( id=task_id)
     task.status = "Completé"
@@ -289,5 +289,5 @@ def task_done(request):
     task.save()
     messages.success(request, "La tâche terminée  ")
 
-    return redirect('TaskList')
+    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page))  # redirige vers la page actuelle 
 

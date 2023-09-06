@@ -159,7 +159,7 @@
                 </div>
                 <!--Modal body-->
                 <div class="modal-body">
-                    <form name="f3" method="post" action="{% url 'task_done' %}">
+                    <form name="f3" method="post" action="{% url 'task_done' page_obj.number %}">
                         {% csrf_token %}
                        
                         <div class="form-group">
@@ -183,13 +183,48 @@
     <!--end of task done Modal-->
             {% endfor %}
 
+<!--Task infos modal-->
+{% for tdo in page_obj %}
+<div class="modal fade" id="exampleModalInfo{{tdo.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelInfo{{tdo.id}}"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabelInfo{{tdo.id}}">Tache completé :</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <!--Modal body-->
+        <div class="modal-body">
+            <form name="f#" >
+                {% csrf_token %}
+               
+                <div class="form-group">
+                    <label>Commentaire :</label>
+                   <h6> {{tdo.commentaire}}</h6>
+                </div>
+
+
+        </div>
+        <!-- End Modal body-->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!--end of task info Modal-->
+    {% endfor %}
+
 
             <form method="GET" action="{% url 'TaskList' %}">
                 <div class="div-btn d-flex justify-content-start">
                     <button type="button" class="btn btn-primary btn-block compose-btn mb-4" style="width:170px;background-color: #e1000a;" data-toggle="modal" data-target="#exampleModal"><i class="bx bx-plus"></i> Nouvelle tâche</button>
                     <div style="position: absolute; right:  180px;">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="filter" id="allTasksRadio" value="" {% if filter_option == '' %}checked{% endif %}>
+                            <input class="form-check-input" type="radio" name="filter" id="allTasksRadio" value="" checked>
                             <label class="form-check-label" for="allTasksRadio">Toutes les tâches</label>
                         </div>
             
@@ -317,12 +352,14 @@
                                     {% for tdo in page_obj %}
                                     <tr>
                                         
-                                        <td>
+                                         <td>
                                             {% if tdo.status == 'En cours' %}
 
                                             <a href="#" data-toggle="modal" data-target="#exampleModal{{tdo.id}}"><i class='bx bx-select-multiple'></i></a>
 
-                                            {% endif %}
+                                            {% elif tdo.status == 'Completé' %}
+                                            <a href="#" data-toggle="modal" data-target="#exampleModalInfo{{tdo.id}}"><i class='bx bx-info-square' style="color:blue;"></i></a>
+                                                {% endif %}
                                         </td>
                                        
                                         <td>{{tdo.tache}}</td>
@@ -369,18 +406,18 @@
                             <nav>
                                 <ul class="pagination ">
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=1">
+                                        <a class="page-link" href="?page=1&filter={{filter_option}}">
                                             <span aria-hidden="true">&laquo;</span>
                                             <span class="sr-only">First</span>
                                         </a>
                                     </li>
                                     {% for i in page_obj.paginator.page_range %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{i}}">{{ i }}</a>
+                                        <a class="page-link" href="?page={{i}}&filter={{filter_option}}">{{ i }}</a>
                                     </li>
                                     {% endfor %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&filter={{filter_option}}">
                                             <span aria-hidden="true">&raquo;</span>
                                             <span class="sr-only">Last</span>
                                         </a>
