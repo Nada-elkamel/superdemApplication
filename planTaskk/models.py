@@ -17,6 +17,7 @@ class Todo(models.Model):
     datecreation = models.DateTimeField()
     createur = models.TextField()
     source = models.TextField()
+    interne = models.TextField(blank=True)
     responsable = models.TextField()
     nature = models.TextField()
     tache = models.TextField()

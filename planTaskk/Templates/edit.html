@@ -176,7 +176,7 @@
                             </select>
                         </div>
 
-                        <div id="interneSelectContainer" style="display: none;">
+                        <div id="interneSelectContainer" {% if task.source == 'interne' %} style="display:block;"{% endif %}>
                             <div class="form-group">
                                 <label>Interne :</label>
                                 <select name="interne" class="form-control">

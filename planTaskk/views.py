@@ -212,6 +212,8 @@ def add_todo(request,current_page,filter_option):
         createur = request.user.username
         responsable = request.POST.get('responsable')
         source = request.POST.get('source')
+        if source == 'Interne':
+            interne = request.POST.get('interne')
         nature = request.POST.get('nature')
         deadline = request.POST.get('deadline') 
         tache = request.POST.get('tache')
@@ -223,7 +225,8 @@ def add_todo(request,current_page,filter_option):
             source = source,
             nature = nature,
             tache = tache,
-            deadline = deadline
+            deadline = deadline,
+            interne = interne
         )
 
         todo.save()
@@ -259,6 +262,7 @@ def update_task(request, task_id):
         task.source = request.POST['source']
         task.nature = request.POST['nature']
         task.tache = request.POST['tache']
+        task.interne = request.POST['interne']
         if task.status != 'En cours' :
             task.status = request.POST['status']
         task.save()

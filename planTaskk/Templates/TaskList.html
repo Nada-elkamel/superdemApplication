@@ -365,7 +365,11 @@ aria-hidden="true">
                                         <td>{{tdo.tache}}</td>
                                         <td>{{tdo.deadline|date:"d/m/Y" }}</td>
                                         <td>{{tdo.nature}}</td>
+                                        {% if tdo.source == 'Interne' %}
+                                        <td>{{tdo.source}} ({{tdo.interne}})</td>
+                                        {% else %}
                                         <td>{{tdo.source}}</td>
+                                        {% endif %}
                                         <td>{{tdo.responsable}}</td>
                                         <td>{{tdo.createur}}</td>
                                         <td>{{tdo.datecreation|date:"d/m/Y" }}</td>
