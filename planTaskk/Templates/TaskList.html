@@ -159,7 +159,7 @@
                 </div>
                 <!--Modal body-->
                 <div class="modal-body">
-                    <form name="f3" method="post" action="{% url 'task_done' page_obj.number %}">
+                    <form name="f3" method="post" action="{% url 'task_done' page_obj.number filter_option %}">
                         {% csrf_token %}
                        
                         <div class="form-group">
@@ -250,7 +250,7 @@ aria-hidden="true">
                     </div>
                     <!--Modal body-->
                     <div class="modal-body">
-                        <form name="f1" method="post" action="{% url 'add_todo' %}">
+                        <form name="f1" method="post" action="{% url 'add_todo' page_obj.number filter_option %}">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label>Responsable :</label>
@@ -353,7 +353,7 @@ aria-hidden="true">
                                     <tr>
                                         
                                          <td>
-                                            {% if tdo.status == 'En cours' %}
+                                            {% if tdo.status == 'En cours' and request.user.username == tdo.responsable %}
 
                                             <a href="#" data-toggle="modal" data-target="#exampleModal{{tdo.id}}"><i class='bx bx-select-multiple'></i></a>
 
@@ -384,14 +384,14 @@ aria-hidden="true">
                                         {% endif %}
                                         <td>
                                             {% if request.user.username == tdo.createur %}
-                                            <a href="{% url 'edit' tdo.id page_obj.number %}" class="edit" style="padding: 5px 10px; color: #6096fc; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                            <a href="{% url 'edit' tdo.id page_obj.number filter_option %}" class="edit" style="padding: 5px 10px; color: #6096fc; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
                                                 onmouseover="this.style.backgroundColor = 'rgba(96, 150, 252, 0.4)';"
                                                 onmouseout="this.style.backgroundColor = 'transparent';">
                                                 <i class='bx bx-edit-alt' alt="editer"></i>
                                             </a>
                                             {% endif %}
                                             {% if request.user.username == tdo.responsable and tdo.status == 'Programmé' %}
-                                            <a href="{% url 'start_task' tdo.id page_obj.number %}" style="padding: 5px 10px; color: #ffaf47; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
+                                            <a href="{% url 'start_task' tdo.id page_obj.number filter_option %}" style="padding: 5px 10px; color: #ffaf47; background-color: transparent; transition: background-color 0.3s, color 0.3s;"
                                                 onmouseover="this.style.backgroundColor = 'rgba(255, 175, 71, 0.4)';"
                                                 onmouseout="this.style.backgroundColor = 'transparent';">
                                                 <i class="bx bxs-hand-up"></i>

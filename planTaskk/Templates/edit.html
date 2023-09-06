@@ -148,6 +148,7 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <input type="hidden" value="{{current_page}}" name="current_page">
+                            <input type="text" value="{{filter_option}}" name="filter_option" readonly>
                             <label>Responsable :</label>
 
                             <select name="responsable"  class="form-control">
@@ -227,10 +228,11 @@
                         <input type="radio" name="status" value="Programmé" class="form-check-input" id="r1"style="position: absolute; left: 180px;" checked>
                         <label class="form-check-label" for="r1"style="position: absolute; left: 185px;" >Programmé</label>
                         {% else %}
-                        <input type="radio" name="status" value="Non pris en charge" class="form-check-input" id="r1" >
+                        <input type="radio" name="status" value="Non pris en charge" class="form-check-input" disabled id="r1" >
                         <label class="form-check-label" for="r1">Non pris en charge</label>
-                    <input type="radio" name="status" value="Programmé" class="form-check-input" id="r1"style="position: absolute; left: 180px;">
+                    <input type="radio" name="status" value="Programmé" class="form-check-input" id="r1" disabled style="position: absolute; left: 180px;">
                     <label class="form-check-label" for="r1"style="position: absolute; left: 185px;" >Programmé</label>
+                     <br><small><i>Status dejà en cours</i></small>
                             {% endif %}
                         </div>
 
@@ -238,7 +240,7 @@
                 <!-- End Modal body-->
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Modifier</button>
-                   <a href="{% url 'TaskList' %}" ><button type="button" class="btn btn-secondary">Annuler</button></a>
+                   <a href="{% url 'TaskList' %}?page={{current_page}}&filter={{filter_option}}" ><button type="button" class="btn btn-secondary">Annuler</button></a>
                     </form>
                 </div>
             </div>

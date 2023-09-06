@@ -205,7 +205,7 @@ def edit_profile(request):
 
 #fonction d'ajout d'une tache
 @login_required(login_url='login')
-def add_todo(request):
+def add_todo(request,current_page,filter_option):
     if request.method == 'POST':
         status = request.POST.get('status')
         current_datetime = timezone.now()
@@ -229,11 +229,11 @@ def add_todo(request):
         todo.save()
         messages.success(request, "La tâche a été ajoutée avec succès")
 
-        return redirect('TaskList')
+        return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page)+'&filter='+filter_option) 
 
 #fonction qui affiche la page de l'edition
 @login_required(login_url='login')
-def edit(request,task_id,current_page):
+def edit(request,task_id,current_page,filter_option):
     user_profile = UserProfile.objects.get(user=request.user)
     task = Todo.objects.get( id=task_id)
     context = {
@@ -243,7 +243,8 @@ def edit(request,task_id,current_page):
         'natures' : natures,
         'current_page' : current_page,
         'user_profile': user_profile,
-        'current_page' : current_page
+        'current_page' : current_page,
+        'filter_option' : filter_option
 
     }
     return render(request, 'edit.html',context)
@@ -258,30 +259,29 @@ def update_task(request, task_id):
         task.source = request.POST['source']
         task.nature = request.POST['nature']
         task.tache = request.POST['tache']
-        task.status = request.POST['status']
-        if task.status == 'Interne':
-            task.interne = request.POST['interne']
+        if task.status != 'En cours' :
+            task.status = request.POST['status']
         task.save()
         messages.success(request, "La tâche a été modifiée avec succès")
-
         current_page = request.POST['current_page']
-        return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page)) 
+        filter_option = request.POST['filter_option']
+        return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page)+'&filter='+filter_option) 
     return render(request, 'edit_task.html', {'task': task})
 
 #fonction qui permet de marquer une tache en cours
 @login_required(login_url='login')
-def start_task(request,task_id,current_page):
+def start_task(request,task_id,current_page,filter_option):
     task = Todo.objects.get( id=task_id)
     task.status = "En cours"
     task.save()
     messages.success(request, "La tâche est en cours d'exécution")
 
     
-    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page))  # redirige vers la page actuelle 
+    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page)+'&filter='+filter_option)  # redirige vers la page actuelle 
 
 #fonction qui permet de marquer une tache comme terminée
 @login_required(login_url='login')
-def task_done(request,current_page):
+def task_done(request,current_page,filter_option):
     task_id = request.POST['task_id']
     task = Todo.objects.get( id=task_id)
     task.status = "Completé"
@@ -289,5 +289,5 @@ def task_done(request,current_page):
     task.save()
     messages.success(request, "La tâche terminée  ")
 
-    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page))  # redirige vers la page actuelle 
+    return HttpResponseRedirect('/planTaskk/TaskList?page='+ str(current_page)+'&filter='+filter_option)  # redirige vers la page actuelle 
 
